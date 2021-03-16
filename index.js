@@ -13,10 +13,26 @@ async function run() {
         return;
     }
 
-    const body =
-        context.eventName === "issue_comment"
-            ? context.payload.comment.body
-            : context.payload.pull_request.body;
+    console.log('1');
+
+    let body = '';
+    if (context.eventName === "issue_comment") {
+        console.log('2');
+        body = context.payload.comment.body;
+    } else if (typeof context.payload.pull_request !== undefined) {
+        console.log('3');
+        body = context.payload.pull_request.body;
+    }
+
+        console.log('4');
+    if (body === '' || body === null) {
+        console.log('5');
+        core.setOutput("triggered", "false");
+        return;
+    }
+
+        console.log('6');
+        console.log('body: ' + body)
     core.setOutput('comment_body', body);
 
     if (
